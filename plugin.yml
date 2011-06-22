@@ -1,5 +1,7 @@
-name: TweakCart
+name: TweakFurnace
 main: net.tweakcraft.TweakFurnace
-authors: [GuntherDW, Edoxile]
+authors:
+    - GuntherDW
+    - Edoxile
 website: https://github.com/Edoxile/TweakFurnace
 version: 0.1
