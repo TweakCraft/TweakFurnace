@@ -1,5 +1,6 @@
 package net.tweakcraft.TweakFurnace.Listeners;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
@@ -40,8 +41,29 @@ public class TFBlockListener extends BlockListener {
             for (Furnace f : furnaceList) {
                 ItemStack stack = f.getInventory().getContents()[2];
                 f.getInventory().setItem(2, null);
-                f.getWorld().dropItem(f.getBlock().getLocation(), stack);
+                f.getWorld().dropItem(getFurnaceDropLocation(f), stack);
             }
         }
+    }
+
+    private Location getFurnaceDropLocation(Furnace furnace) {
+        Location l = furnace.getBlock().getLocation();
+        switch (furnace.getBlock().getData()) {
+            case 0x2:
+                l.setZ(l.getZ() - 1);
+                break;
+            case 0x3:
+                l.setZ(l.getZ() + 1);
+                break;
+            case 0x4:
+                l.setX(l.getX() - 1);
+                break;
+            case 0x5:
+                l.setX(l.getX() + 1);
+                break;
+            default:
+                break;
+        }
+        return l;
     }
 }
