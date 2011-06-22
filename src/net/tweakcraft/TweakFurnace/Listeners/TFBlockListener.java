@@ -1,5 +1,6 @@
 package net.tweakcraft.TweakFurnace.Listeners;
 
+import net.tweakcraft.TweakFurnace.TweakFurnace;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -15,6 +16,13 @@ import java.util.ArrayList;
  * User: Edoxile
  */
 public class TFBlockListener extends BlockListener {
+
+    private TweakFurnace plugin;
+
+    public TFBlockListener(TweakFurnace instance) {
+        this.plugin = instance;
+    }
+
     public void onBlockRedstoneChange(BlockRedstoneEvent event) {
         if (event.getNewCurrent() != event.getOldCurrent()
                 && !(event.getOldCurrent() > 0 && event.getOldCurrent() > 0) && event.getNewCurrent() > 0) {
