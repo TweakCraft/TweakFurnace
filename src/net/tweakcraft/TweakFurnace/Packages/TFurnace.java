@@ -24,15 +24,27 @@ public class TFurnace {
     }
 
     public ItemStack getSmelt() {
-        return this.furnace.getInventory().getItem(0);
+        ItemStack smelt = this.furnace.getInventory().getItem(0);
+        if(smelt==null || smelt.getTypeId()==0)
+            return null;
+        else
+            return smelt;
     }
 
     public ItemStack getFuel() {
-        return this.furnace.getInventory().getItem(1);
+        ItemStack fuel = this.furnace.getInventory().getItem(1);
+        if(fuel==null || fuel.getTypeId()==0)
+            return null;
+        else
+            return fuel;
     }
 
     public ItemStack getResult() {
-        return this.furnace.getInventory().getItem(2);
+        ItemStack result = this.furnace.getInventory().getItem(2);
+        if(result==null || result.getTypeId()==0)
+            return null;
+        else
+            return result;
     }
 
     public void setFuel(ItemStack stack) {
@@ -54,81 +66,85 @@ public class TFurnace {
      * @return The amount of fuel that didn't fit in the furnace
      */
     public ItemStack putFuel(ItemStack fuel) {
-        if (getFuel() != null && (fuel.getTypeId() != getFuel().getTypeId()
-                || getFuel().getDurability() != fuel.getDurability())
-                && getFuel().getTypeId() != Material.AIR.getId())
+        if ((this.getFuel() != null && fuel.getTypeId() != this.getFuel().getTypeId())
+                && this.getFuel().getDurability() != fuel.getDurability())
             return fuel;
 
-        if (getFuel() == null || getFuel().getTypeId() == Material.AIR.getId()) {
-            int amountinfurnace = 0;
-            int amount = fuel.getAmount();
-            while (amount > 0 && amountinfurnace < maxstack) {
-                amountinfurnace++;
-                amount--;
-            }
-            ItemStack furnaceFuel = new ItemStack(fuel.getTypeId(), amountinfurnace);
-            setFuel(furnaceFuel);
-            if (amount == 0) {
-                return null;
-            } else {
-                fuel.setAmount(amount);
-                return fuel;
-            }
+        int amount = 0;
+        int amountinfurnace = 0;
+        ItemStack newFuel = null;
+        boolean updateCount = false;
+
+        if (this.getFuel() == null) {
+            amountinfurnace = 0;
+            amount = fuel.getAmount();
+            newFuel = new ItemStack(fuel.getTypeId(), 0, fuel.getDurability());
         } else {
-            int amountinfurnace = this.getFuel().getAmount();
-            int amount = fuel.getAmount();
-            while (amount > 0 && amountinfurnace < maxstack) {
-                amountinfurnace++;
-                amount--;
-            }
-            ItemStack furnaceFuel = getFuel();
-            furnaceFuel.setAmount(amountinfurnace);
-            setFuel(furnaceFuel);
-            if (amount == 0) {
-                return null;
-            } else {
-                fuel.setAmount(amount);
-                return fuel;
-            }
+            amountinfurnace = this.getFuel().getAmount();
+            amount = fuel.getAmount();
+            newFuel = this.getFuel();
+            updateCount=true;
+        }
+
+        while (amount > 0 && amountinfurnace < maxstack) {
+            amount--;
+            amountinfurnace++;
+        }
+
+        if(updateCount)
+            this.getFuel().setAmount(amountinfurnace);
+        else {
+            newFuel.setAmount(amountinfurnace);
+            this.setFuel(newFuel);
+        }
+
+        if (amount == 0)
+            return null;
+        else {
+            fuel.setAmount(amount);
+            return fuel;
         }
     }
 
+
     public ItemStack putSmelt(ItemStack smelt) {
-        if ((getSmelt() != null && smelt.getTypeId() != getSmelt().getTypeId()
-                && getSmelt().getDurability() != smelt.getDurability())
-                && getSmelt().getTypeId() != Material.AIR.getId())
+        if ((this.getSmelt() != null && smelt.getTypeId() != this.getSmelt().getTypeId())
+                && this.getSmelt().getDurability() != smelt.getDurability())
             return smelt;
 
-        if (getSmelt() == null || getSmelt().getTypeId() == Material.AIR.getId()) {
-            int amountinfurnace = 0;
-            int amount = smelt.getAmount();
-            while (amount > 0 && amountinfurnace < maxstack) {
-                amountinfurnace++;
-                amount--;
-            }
-            ItemStack furnaceSmelt = new ItemStack(smelt.getTypeId(), amountinfurnace);
-            setSmelt(furnaceSmelt);
-            if (amount == 0) {
-                return null;
-            } else {
-                smelt.setAmount(amount);
-                return smelt;
-            }
+        int amount = 0;
+        int amountinfurnace = 0;
+        ItemStack newSmelt = null;
+        boolean updateCount = false;
+
+        if (this.getSmelt() == null) {
+            amountinfurnace = 0;
+            amount = smelt.getAmount();
+            newSmelt = new ItemStack(smelt.getTypeId(), 0, smelt.getDurability());
         } else {
-            int amountinfurnace = getSmelt().getAmount();
-            int amount = smelt.getAmount();
-            while (amount > 0 && amountinfurnace < maxstack) {
-                amountinfurnace++;
-                amount--;
-            }
-            ItemStack furnaceSmelt = getSmelt();
-            setSmelt(furnaceSmelt);
-            if (amount == 0) {
-                return null;
-            } else {
-                smelt.setAmount(amount);
-                return smelt;
-            }
+            amountinfurnace = this.getSmelt().getAmount();
+            amount = smelt.getAmount();
+            newSmelt = this.getSmelt();
+            updateCount=true;
+        }
+
+        while (amount > 0 && amountinfurnace < maxstack) {
+            amount--;
+            amountinfurnace++;
+        }
+
+        if(updateCount)
+            this.getFuel().setAmount(amountinfurnace);
+        else {
+            newSmelt.setAmount(amountinfurnace);
+            this.setSmelt(newSmelt);
+        }
+
+        if (amount == 0)
+            return null;
+        else {
+            smelt.setAmount(amount);
+            return smelt;
         }
     }
 
