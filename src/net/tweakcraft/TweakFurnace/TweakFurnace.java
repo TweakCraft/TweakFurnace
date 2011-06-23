@@ -36,7 +36,7 @@ public class TweakFurnace extends JavaPlugin {
     public void onEnable() {
         pdfile = this.getDescription();
         registerEvents();
-        loadPlugins();
+        //loadPlugins();
         log.info("[" + pdfile.getName() + "] " + pdfile.getName() + " Enabled. Version: " + pdfile.getVersion());
     }
 

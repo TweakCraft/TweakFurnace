@@ -6,12 +6,17 @@ import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.logging.Logger;
+
 /**
- * @author GuntherDW
+ * @author GuntherDW, Edoxile
  */
 public class TFurnace {
 
+    private static final Logger log = Logger.getLogger("Minecraft");
+
     private Furnace furnace;
+
     private int maxstack = 64;
 
     public TFurnace(Furnace furnace) {
@@ -52,11 +57,12 @@ public class TFurnace {
         /* if(this.getFuel().getTypeId()!=fuel.getTypeId() &&
            this.getFuel().getDurability()!=fuel.getDurability())
             return fuel; */
-        if (this.getFuel() != null || (fuel.getTypeId() != this.getFuel().getTypeId()
-                && this.getFuel().getDurability() != fuel.getDurability()))
+        if ( (getFuel() != null && fuel.getTypeId() != getFuel().getTypeId()
+                && getFuel().getDurability() != fuel.getDurability() )
+                && getFuel().getTypeId() != Material.AIR.getId())
             return fuel;
 
-        if (this.getFuel() == null) {
+        if (getFuel() == null || getFuel().getTypeId() == Material.AIR.getId()) {
             int amountinfurnace = 0;
             int amount = fuel.getAmount();
             while (fuel.getAmount() > 0 && amountinfurnace < maxstack) {
@@ -64,9 +70,13 @@ public class TFurnace {
                 amount--;
             }
             ItemStack furnaceFuel = new ItemStack(fuel.getTypeId(), amountinfurnace);
-            this.setFuel(furnaceFuel);
-            fuel.setAmount(amount);
-            return fuel;
+            setFuel(furnaceFuel);
+            if (amount == 0) {
+                return null;
+            } else {
+                fuel.setAmount(amount);
+                return fuel;
+            }
         } else {
             int amountinfurnace = this.getFuel().getAmount();
             int amount = fuel.getAmount();
@@ -74,10 +84,12 @@ public class TFurnace {
                 amountinfurnace++;
                 amount--;
             }
-            this.getFuel().setAmount(amountinfurnace);
-            if (amount == 0)
+            ItemStack furnaceFuel = getFuel();
+            furnaceFuel.setAmount(amountinfurnace);
+            setFuel(furnaceFuel);
+            if (amount == 0) {
                 return null;
-            else {
+            } else {
                 fuel.setAmount(amount);
                 return fuel;
             }
@@ -85,32 +97,38 @@ public class TFurnace {
     }
 
     public ItemStack putSmelt(ItemStack smelt) {
-        if (this.getSmelt() != null && smelt.getTypeId() == this.getSmelt().getTypeId()
-                && this.getSmelt().getDurability() == smelt.getDurability())
+        if ( (getSmelt() != null && smelt.getTypeId() != getSmelt().getTypeId()
+                && getSmelt().getDurability() != smelt.getDurability() )
+                && getSmelt().getTypeId() != Material.AIR.getId())
             return smelt;
 
-        if (this.getSmelt() == null) {
+        if (getSmelt() == null || getSmelt().getTypeId() == Material.AIR.getId()) {
             int amountinfurnace = 0;
             int amount = smelt.getAmount();
-            while (smelt.getAmount() > 0 && amountinfurnace < maxstack) {
+            while (amount > 0 && amountinfurnace < maxstack) {
                 amountinfurnace++;
                 amount--;
             }
             ItemStack furnaceSmelt = new ItemStack(smelt.getTypeId(), amountinfurnace);
-            this.setSmelt(furnaceSmelt);
-            smelt.setAmount(amount);
-            return smelt;
+            setSmelt(furnaceSmelt);
+            if (amount == 0) {
+                return null;
+            } else {
+                smelt.setAmount(amount);
+                return smelt;
+            }
         } else {
-            int amountinfurnace = this.getSmelt().getAmount();
+            int amountinfurnace = getSmelt().getAmount();
             int amount = smelt.getAmount();
-            while (smelt.getAmount() > 0 && amountinfurnace < maxstack) {
+            while (amount > 0 && amountinfurnace < maxstack) {
                 amountinfurnace++;
                 amount--;
             }
-            this.getSmelt().setAmount(amountinfurnace);
-            if (amount == 0)
+            ItemStack furnaceSmelt = getSmelt();
+            setSmelt(furnaceSmelt);
+            if (amount == 0) {
                 return null;
-            else {
+            } else {
                 smelt.setAmount(amount);
                 return smelt;
             }
@@ -122,13 +140,18 @@ public class TFurnace {
     }
 
     public static boolean isFurnace(Block block) {
-        return (block.getTypeId() == Material.BURNING_FURNACE.getId()
-                || block.getTypeId() == Material.FURNACE.getId());
+        if (block.getTypeId() == Material.BURNING_FURNACE.getId() || block.getTypeId() == Material.FURNACE.getId()) {
+            return true;
+        } else {
+            //log.info("Found an other block (" + block.getType().name().toLowerCase() + ")/");
+            return false;
+        }
     }
 
     public void dropResult() {
         ItemStack result = getResult();
         if (result != null && result.getAmount() > 0 && result.getTypeId() != Material.AIR.getId()) {
+            log.info("Dropping loot.");
             furnace.getWorld().dropItem(getFurnaceDropLocation(), result);
             setResult(null);
         }

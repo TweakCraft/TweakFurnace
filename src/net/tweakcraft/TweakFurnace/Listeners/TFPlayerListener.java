@@ -3,6 +3,7 @@ package net.tweakcraft.TweakFurnace.Listeners;
 import net.tweakcraft.TweakFurnace.Packages.Items;
 import net.tweakcraft.TweakFurnace.Packages.TFurnace;
 import net.tweakcraft.TweakFurnace.TweakFurnace;
+import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.event.block.Action;
@@ -10,10 +11,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.logging.Logger;
+
 /**
  * @author GuntherDW
  */
 public class TFPlayerListener extends PlayerListener {
+
+    private static final Logger log = Logger.getLogger("Minecraft");
 
     private TweakFurnace plugin;
 
@@ -30,15 +35,13 @@ public class TFPlayerListener extends PlayerListener {
         if (TFurnace.isFurnace(block)) {
             TFurnace furnace = new TFurnace((Furnace) block.getState());
             ItemStack hand = event.getItem();
-            if (hand != null) {
+            if (hand != null && hand.getAmount() > 0 && hand.getTypeId() != Material.AIR.getId()) {
                 if (Items.isFuel(hand.getTypeId())) {
                     ItemStack leftover = furnace.putFuel(hand);
-                    if (!leftover.equals(hand)) // We don't need to change the hand if it wasn't changed
-                        event.getPlayer().setItemInHand(hand);
+                    event.getPlayer().setItemInHand(leftover);
                 } else if (Items.isSmeltable(hand.getTypeId())) {
                     ItemStack leftover = furnace.putSmelt(hand);
-                    if (!leftover.equals(hand)) // We don't need to change the hand if it wasn't changed
-                        event.getPlayer().setItemInHand(leftover);
+                    event.getPlayer().setItemInHand(leftover);
                 }
             }
         }
