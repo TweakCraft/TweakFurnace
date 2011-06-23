@@ -28,17 +28,16 @@ public class TFBlockListener extends BlockListener {
         if (event.getNewCurrent() == event.getOldCurrent() || (event.getNewCurrent() > 0 && event.getOldCurrent() > 0) || event.getNewCurrent() == 0) {
             return;
         }
-        log.info("Passed redstone event: {" + event.getOldCurrent() + " -> " + event.getNewCurrent() + "}");
         Block redstoneBlock = event.getBlock();
         Block tempBlock;
         ArrayList<TFurnace> furnaceList = new ArrayList<TFurnace>();
-        for (int dx = -1; dx < 1; dx++) {
+        for (int dx = -1; dx <= 1; dx++) {
             tempBlock = redstoneBlock.getRelative(dx, 0, 0);
             if (TFurnace.isFurnace(tempBlock)) {
                 furnaceList.add(new TFurnace((Furnace) tempBlock.getState()));
             }
         }
-        for (int dz = -1; dz < 1; dz++) {
+        for (int dz = -1; dz <= 1; dz++) {
             tempBlock = redstoneBlock.getRelative(0, 0, dz);
             if (TFurnace.isFurnace(tempBlock)) {
                 furnaceList.add(new TFurnace((Furnace) tempBlock.getState()));
@@ -48,10 +47,6 @@ public class TFBlockListener extends BlockListener {
         tempBlock = redstoneBlock.getRelative(0, 0, 1);
         if (TFurnace.isFurnace(tempBlock)) {
             furnaceList.add(new TFurnace((Furnace) tempBlock.getState()));
-        }
-
-        if (furnaceList.size() > 0) {
-            log.info("Found " + furnaceList.size() + " furnace(s).");
         }
 
         for (TFurnace f : furnaceList) {

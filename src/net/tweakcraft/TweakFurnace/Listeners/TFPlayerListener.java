@@ -27,7 +27,8 @@ public class TFPlayerListener extends PlayerListener {
     }
 
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if (event.isCancelled()) return;
+        if (event.isCancelled())
+            return;
         if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
 
         Block block = event.getClickedBlock();
