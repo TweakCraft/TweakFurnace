@@ -2,6 +2,7 @@ package net.tweakcraft.TweakFurnace;
 
 import net.tweakcraft.TweakFurnace.Listeners.TFBlockListener;
 import net.tweakcraft.TweakFurnace.Listeners.TFPlayerListener;
+import net.tweakcraft.TweakFurnace.Packages.Items;
 import org.bukkit.event.Event;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
