@@ -54,8 +54,8 @@ public class TFurnace {
      * @return The amount of fuel that didn't fit in the furnace
      */
     public ItemStack putFuel(ItemStack fuel) {
-        if ((getFuel() != null && fuel.getTypeId() != getFuel().getTypeId()
-                && getFuel().getDurability() != fuel.getDurability())
+        if (getFuel() != null && (fuel.getTypeId() != getFuel().getTypeId()
+                || getFuel().getDurability() != fuel.getDurability())
                 && getFuel().getTypeId() != Material.AIR.getId())
             return fuel;
 
@@ -143,6 +143,9 @@ public class TFurnace {
     public void dropResult() {
         ItemStack result = getResult();
         if (result != null && result.getAmount() > 0 && result.getTypeId() != Material.AIR.getId()) {
+            /**
+             * TODO: log loot drop; finding player near block and log them (anti-grief)
+             */
             furnace.getWorld().dropItemNaturally(getFurnaceDropLocation(), result);
             setResult(null);
         }

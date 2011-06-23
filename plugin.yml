@@ -5,3 +5,7 @@ authors:
     - Edoxile
 website: https://github.com/Edoxile/TweakFurnace
 version: 0.1
+commands:
+    tfmute:
+        description: Toggle mute for this plugin
+        usage: /<command>

@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Created by IntelliJ IDEA.
  *
- * @author Edoxile
+ * @author GuntherDW, Edoxile
  */
 public class TFBlockListener extends BlockListener {
 
@@ -28,6 +28,7 @@ public class TFBlockListener extends BlockListener {
         if (event.getNewCurrent() == event.getOldCurrent() || (event.getNewCurrent() > 0 && event.getOldCurrent() > 0) || event.getNewCurrent() == 0) {
             return;
         }
+
         Block redstoneBlock = event.getBlock();
         Block tempBlock;
         ArrayList<TFurnace> furnaceList = new ArrayList<TFurnace>();
