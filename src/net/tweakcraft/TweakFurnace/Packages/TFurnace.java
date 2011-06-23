@@ -1,5 +1,7 @@
 package net.tweakcraft.TweakFurnace.Packages;
 
+import org.bukkit.Material;
+import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.ItemStack;
 
@@ -111,6 +113,11 @@ public class TFurnace {
 
     public Furnace getFurnace() {
         return furnace;
+    }
+
+    public boolean isFurnace(Block block) {
+        return block.getTypeId() == Material.BURNING_FURNACE.getId()
+            || block.getTypeId() == Material.FURNACE.getId();
     }
 
 }
