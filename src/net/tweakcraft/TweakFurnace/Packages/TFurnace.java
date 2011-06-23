@@ -52,8 +52,8 @@ public class TFurnace {
         /* if(this.getFuel().getTypeId()!=fuel.getTypeId() &&
            this.getFuel().getDurability()!=fuel.getDurability())
             return fuel; */
-        if (this.getFuel() != null && fuel.getTypeId() == this.getFuel().getTypeId()
-                && this.getFuel().getDurability() == fuel.getDurability())
+        if (this.getFuel() != null || (fuel.getTypeId() != this.getFuel().getTypeId()
+                && this.getFuel().getDurability() != fuel.getDurability()))
             return fuel;
 
         if (this.getFuel() == null) {
@@ -128,7 +128,7 @@ public class TFurnace {
 
     public void dropResult() {
         ItemStack result = getResult();
-        if (result != null) {
+        if (result != null && result.getAmount() > 0 && result.getTypeId() != Material.AIR.getId()) {
             furnace.getWorld().dropItem(getFurnaceDropLocation(), result);
             setResult(null);
         }
@@ -138,16 +138,16 @@ public class TFurnace {
         Location l = furnace.getBlock().getLocation();
         switch (furnace.getBlock().getData()) {
             case 0x2:
-                l.setZ(l.getZ() - 1);
+                l.setZ(l.getBlockZ() - 1);
                 break;
             case 0x3:
-                l.setZ(l.getZ() + 1);
+                l.setZ(l.getBlockZ() + 1);
                 break;
             case 0x4:
-                l.setX(l.getX() - 1);
+                l.setX(l.getBlockX() - 1);
                 break;
             case 0x5:
-                l.setX(l.getX() + 1);
+                l.setX(l.getBlockX() + 1);
                 break;
             default:
                 break;
