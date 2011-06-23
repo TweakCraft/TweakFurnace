@@ -22,22 +22,22 @@ public class TFPlayerListener extends PlayerListener {
     }
 
     public void onPlayerInteract(PlayerInteractEvent event) {
-        if(event.isCancelled()) return;
-        if(event.getAction() != Action.LEFT_CLICK_BLOCK) return;
+        if (event.isCancelled()) return;
+        if (event.getAction() != Action.LEFT_CLICK_BLOCK) return;
 
         Block block = event.getClickedBlock();
 
-        if(block instanceof Furnace) {
+        if (TFurnace.isFurnace(block)) {
             TFurnace furnace = new TFurnace((Furnace) block.getState());
             ItemStack hand = event.getItem();
-            if(hand!=null) {
-                if(Items.isFuel(hand.getTypeId())) {
+            if (hand != null) {
+                if (Items.isFuel(hand.getTypeId())) {
                     ItemStack leftover = furnace.putFuel(hand);
-                    if(!leftover.equals(hand)) // We don't need to change the hand if it wasn't changed
+                    if (!leftover.equals(hand)) // We don't need to change the hand if it wasn't changed
                         event.getPlayer().setItemInHand(hand);
-                } else if(Items.isSmeltable(hand.getTypeId())) {
+                } else if (Items.isSmeltable(hand.getTypeId())) {
                     ItemStack leftover = furnace.putSmelt(hand);
-                    if(!leftover.equals(hand)) // We don't need to change the hand if it wasn't changed
+                    if (!leftover.equals(hand)) // We don't need to change the hand if it wasn't changed
                         event.getPlayer().setItemInHand(leftover);
                 }
             }

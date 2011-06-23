@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 
 /**
  * Created by IntelliJ IDEA.
+ *
  * @author: Edoxile, GuntherDW
  */
 public class TweakFurnace extends JavaPlugin {
@@ -21,12 +22,13 @@ public class TweakFurnace extends JavaPlugin {
     private Items items = new Items();
 
     public void onDisable() {
-        log.info("["+pdfile.getName()+"] Disabled.");
+        log.info("[" + pdfile.getName() + "] Disabled.");
     }
 
     public void onEnable() {
         pdfile = this.getDescription();
-        log.info("["+pdfile.getName()+"] "+pdfile.getName()+" Enabled. Version: " + pdfile.getVersion());
+        registerEvents();
+        log.info("[" + pdfile.getName() + "] " + pdfile.getName() + " Enabled. Version: " + pdfile.getVersion());
     }
 
     public void registerEvents() {
