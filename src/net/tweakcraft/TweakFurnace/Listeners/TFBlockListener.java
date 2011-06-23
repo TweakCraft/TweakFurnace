@@ -32,16 +32,18 @@ public class TFBlockListener extends BlockListener {
         Block redstoneBlock = event.getBlock();
         Block tempBlock;
         ArrayList<TFurnace> furnaceList = new ArrayList<TFurnace>();
-        for (int dx = -1; dx <= 1; dx++) {
-            tempBlock = redstoneBlock.getRelative(dx, 0, 0);
-            if (TFurnace.isFurnace(tempBlock)) {
-                furnaceList.add(new TFurnace((Furnace) tempBlock.getState()));
+        for (int dy = 0; dy <= 1; dy++) {
+            for (int dx = -1; dx <= 1; dx++) {
+                tempBlock = redstoneBlock.getRelative(dx, dy, 0);
+                if (TFurnace.isFurnace(tempBlock)) {
+                    furnaceList.add(new TFurnace((Furnace) tempBlock.getState()));
+                }
             }
-        }
-        for (int dz = -1; dz <= 1; dz++) {
-            tempBlock = redstoneBlock.getRelative(0, 0, dz);
-            if (TFurnace.isFurnace(tempBlock)) {
-                furnaceList.add(new TFurnace((Furnace) tempBlock.getState()));
+            for (int dz = -1; dz <= 1; dz++) {
+                tempBlock = redstoneBlock.getRelative(0, dy, dz);
+                if (TFurnace.isFurnace(tempBlock)) {
+                    furnaceList.add(new TFurnace((Furnace) tempBlock.getState()));
+                }
             }
         }
 
