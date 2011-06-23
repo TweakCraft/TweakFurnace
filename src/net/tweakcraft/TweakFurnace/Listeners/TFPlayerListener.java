@@ -32,7 +32,7 @@ public class TFPlayerListener extends PlayerListener {
             return;
         Block block = event.getClickedBlock();
         if (TFurnace.isFurnace(block)) {
-            if(!plugin.canUseTweakFurnace(event.getPlayer(), event.getClickedBlock()))
+            if (!plugin.canUseTweakFurnace(event.getPlayer(), event.getClickedBlock()))
                 return;
             TFurnace furnace = new TFurnace((Furnace) block.getState());
             ItemStack hand = event.getItem();
@@ -68,5 +68,4 @@ public class TFPlayerListener extends PlayerListener {
             }
         }
     }
-
 }
