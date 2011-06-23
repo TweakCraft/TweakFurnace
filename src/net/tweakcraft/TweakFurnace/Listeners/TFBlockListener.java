@@ -11,7 +11,8 @@ import java.util.ArrayList;
 
 /**
  * Created by IntelliJ IDEA.
- * User: Edoxile
+ *
+ * @author Edoxile
  */
 public class TFBlockListener extends BlockListener {
 
