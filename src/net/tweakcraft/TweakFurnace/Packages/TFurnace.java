@@ -3,6 +3,8 @@ package net.tweakcraft.TweakFurnace.Packages;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.block.BlockFace;
+import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.ItemStack;
 
@@ -25,7 +27,7 @@ public class TFurnace {
 
     public ItemStack getSmelt() {
         ItemStack smelt = this.furnace.getInventory().getItem(0);
-        if(smelt==null || smelt.getTypeId()==0)
+        if (smelt == null || smelt.getTypeId() == 0)
             return null;
         else
             return smelt;
@@ -33,7 +35,7 @@ public class TFurnace {
 
     public ItemStack getFuel() {
         ItemStack fuel = this.furnace.getInventory().getItem(1);
-        if(fuel==null || fuel.getTypeId()==0)
+        if (fuel == null || fuel.getTypeId() == 0)
             return null;
         else
             return fuel;
@@ -41,7 +43,7 @@ public class TFurnace {
 
     public ItemStack getResult() {
         ItemStack result = this.furnace.getInventory().getItem(2);
-        if(result==null || result.getTypeId()==0)
+        if (result == null || result.getTypeId() == 0)
             return null;
         else
             return result;
@@ -83,7 +85,7 @@ public class TFurnace {
             amountinfurnace = this.getFuel().getAmount();
             amount = fuel.getAmount();
             newFuel = this.getFuel();
-            updateCount=true;
+            updateCount = true;
         }
 
         while (amount > 0 && amountinfurnace < maxstack) {
@@ -91,7 +93,7 @@ public class TFurnace {
             amountinfurnace++;
         }
 
-        if(updateCount)
+        if (updateCount)
             this.getFuel().setAmount(amountinfurnace);
         else {
             newFuel.setAmount(amountinfurnace);
@@ -125,7 +127,7 @@ public class TFurnace {
             amountinfurnace = this.getSmelt().getAmount();
             amount = smelt.getAmount();
             newSmelt = this.getSmelt();
-            updateCount=true;
+            updateCount = true;
         }
 
         while (amount > 0 && amountinfurnace < maxstack) {
@@ -133,7 +135,7 @@ public class TFurnace {
             amountinfurnace++;
         }
 
-        if(updateCount)
+        if (updateCount)
             this.getFuel().setAmount(amountinfurnace);
         else {
             newSmelt.setAmount(amountinfurnace);
@@ -189,5 +191,98 @@ public class TFurnace {
                 break;
         }
         return l;
+    }
+
+    private BlockFace getFurnaceOrientation() {
+        switch (furnace.getBlock().getData()) {
+            case 0x2:
+                return BlockFace.EAST;
+            case 0x3:
+                return BlockFace.WEST;
+            case 0x4:
+                return BlockFace.NORTH;
+            case 0x5:
+                return BlockFace.SOUTH;
+            default:
+                return BlockFace.SELF;
+        }
+    }
+
+    private Chest getSmeltChest() {
+        BlockFace face;
+        switch (getFurnaceOrientation()) {
+            case EAST:
+                face = BlockFace.NORTH;
+                break;
+            case WEST:
+                face = BlockFace.SOUTH;
+                break;
+            case NORTH:
+                face = BlockFace.WEST;
+                break;
+            case SOUTH:
+                face = BlockFace.EAST;
+                break;
+            default:
+                face = BlockFace.SELF;
+                break;
+        }
+        if (furnace.getBlock().getRelative(face).getTypeId() == Material.CHEST.getId()) {
+            return (Chest) furnace.getBlock().getRelative(face).getState();
+        } else {
+            return null;
+        }
+    }
+
+    private Chest getFuelChest() {
+        BlockFace face;
+        switch (getFurnaceOrientation()) {
+            case EAST:
+                face = BlockFace.WEST;
+                break;
+            case WEST:
+                face = BlockFace.EAST;
+                break;
+            case NORTH:
+                face = BlockFace.SOUTH;
+                break;
+            case SOUTH:
+                face = BlockFace.NORTH;
+                break;
+            default:
+                face = BlockFace.SELF;
+                break;
+        }
+        if (furnace.getBlock().getRelative(face).getTypeId() == Material.CHEST.getId()) {
+            return (Chest) furnace.getBlock().getRelative(face).getState();
+        } else {
+            return null;
+        }
+    }
+
+    private Chest getLootChest() {
+        BlockFace face;
+        switch (getFurnaceOrientation()) {
+            case EAST:
+                face = BlockFace.SOUTH;
+                break;
+            case WEST:
+                face = BlockFace.NORTH;
+                break;
+            case NORTH:
+                face = BlockFace.EAST;
+                break;
+            case SOUTH:
+                face = BlockFace.WEST;
+                break;
+            default:
+                face = BlockFace.SELF;
+                break;
+        }
+        if (furnace.getBlock().getRelative(face).getTypeId() == Material.CHEST.getId()) {
+            return (Chest) furnace.getBlock().getRelative(face).getState();
+        } else {
+            return null;
+        }
     }
 }
