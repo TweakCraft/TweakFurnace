@@ -3,8 +3,7 @@ package net.tweakcraft.TweakFurnace;
 import com.nijiko.permissions.PermissionHandler;
 import com.zones.Zones;
 import com.zones.model.ZoneBase;
-import net.tweakcraft.TweakFurnace.Listeners.TFBlockListener;
-import net.tweakcraft.TweakFurnace.Listeners.TFPlayerListener;
+import net.tweakcraft.TweakFurnace.Listeners.*;
 import net.tweakcraft.TweakFurnace.Packages.Items;
 import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
@@ -28,6 +27,7 @@ public class TweakFurnace extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     private TFPlayerListener playerListener = new TFPlayerListener(this);
     private TFBlockListener blockListener = new TFBlockListener(this);
+    private TFInventoryListener inventoryListener = new TFInventoryListener(this);
     private HashSet<Player> muteList = new HashSet<Player>();
     private Zones zonesPlugin;
     private PermissionHandler permissionsPlugin;
@@ -48,6 +48,7 @@ public class TweakFurnace extends JavaPlugin {
     public void registerEvents() {
         this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
         this.getServer().getPluginManager().registerEvent(Event.Type.REDSTONE_CHANGE, blockListener, Event.Priority.Normal, this);
+        this.getServer().getPluginManager().registerEvent(Event.Type.FURNACE_BURN, inventoryListener, Event.Priority.Monitor, this);
     }
 
     public void loadPlugins() {
@@ -103,7 +104,7 @@ public class TweakFurnace extends JavaPlugin {
         }
     }
 
-    public boolean hasMuteEnabled(Player player){
+    public boolean hasMuteEnabled(Player player) {
         return muteList.contains(player);
     }
 }

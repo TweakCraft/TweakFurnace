@@ -2,7 +2,6 @@ package net.tweakcraft.TweakFurnace.Packages;
 
 import org.bukkit.Material;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,26 +27,5 @@ public class Items {
 
     public static boolean isSmeltable(Integer blockId) {
         return blockId != null ? smeltables.contains(blockId) : false;
-    }
-
-    public static int getOptimumSmeltAmount(Integer blockId) {
-        Material m = Material.getMaterial(blockId);
-        switch (m) {
-            case COAL:
-                return 8;
-            case LAVA_BUCKET:
-                return 1;
-            case LOG:
-            case BOOKSHELF:
-            case WORKBENCH:
-            case CHEST:
-            case WOOD:
-                return 43;
-            case STICK:
-            case SAPLING:
-                return 128;
-            default:
-                return 0;
-        }
     }
 }

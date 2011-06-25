@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.BlockFace;
-import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.ItemStack;
 
@@ -40,27 +39,15 @@ public class TFurnace {
     }
 
     public ItemStack getSmelt() {
-        ItemStack smelt = this.furnace.getInventory().getItem(invSpot.SMELT.getSpot());
-        if (smelt == null || smelt.getTypeId() == 0)
-            return null;
-        else
-            return smelt;
+        return this.furnace.getInventory().getItem(invSpot.SMELT.getSpot());
     }
 
     public ItemStack getFuel() {
-        ItemStack fuel = this.furnace.getInventory().getItem(invSpot.FUEL.getSpot());
-        if (fuel == null || fuel.getTypeId() == 0)
-            return null;
-        else
-            return fuel;
+        return this.furnace.getInventory().getItem(invSpot.FUEL.getSpot());
     }
 
     public ItemStack getResult() {
-        ItemStack result = this.furnace.getInventory().getItem(invSpot.RESULT.getSpot());
-        if (result == null || result.getTypeId() == 0)
-            return null;
-        else
-            return result;
+        return this.furnace.getInventory().getItem(invSpot.RESULT.getSpot());
     }
 
     public ItemStack getItem(invSpot spot) {
@@ -194,7 +181,7 @@ public class TFurnace {
         return l;
     }
 
-    private BlockFace getFurnaceOrientation() {
+    public BlockFace getFurnaceOrientation() {
         switch (furnace.getBlock().getData()) {
             case 0x2:
                 return BlockFace.EAST;
@@ -209,33 +196,29 @@ public class TFurnace {
         }
     }
 
-    private Chest getSmeltChest() {
+    public Block getLeftBlock() {
         BlockFace face;
         switch (getFurnaceOrientation()) {
             case EAST:
-                face = BlockFace.NORTH;
-                break;
-            case WEST:
                 face = BlockFace.SOUTH;
                 break;
+            case WEST:
+                face = BlockFace.NORTH;
+                break;
             case NORTH:
-                face = BlockFace.WEST;
+                face = BlockFace.EAST;
                 break;
             case SOUTH:
-                face = BlockFace.EAST;
+                face = BlockFace.WEST;
                 break;
             default:
                 face = BlockFace.SELF;
                 break;
         }
-        if (furnace.getBlock().getRelative(face).getTypeId() == Material.CHEST.getId()) {
-            return (Chest) furnace.getBlock().getRelative(face).getState();
-        } else {
-            return null;
-        }
+        return furnace.getBlock().getRelative(face);
     }
 
-    private Chest getFuelChest() {
+    public Block getBackBlock() {
         BlockFace face;
         switch (getFurnaceOrientation()) {
             case EAST:
@@ -254,36 +237,28 @@ public class TFurnace {
                 face = BlockFace.SELF;
                 break;
         }
-        if (furnace.getBlock().getRelative(face).getTypeId() == Material.CHEST.getId()) {
-            return (Chest) furnace.getBlock().getRelative(face).getState();
-        } else {
-            return null;
-        }
+        return furnace.getBlock().getRelative(face);
     }
 
-    private Chest getLootChest() {
+    public Block getRightBlock() {
         BlockFace face;
         switch (getFurnaceOrientation()) {
             case EAST:
-                face = BlockFace.SOUTH;
-                break;
-            case WEST:
                 face = BlockFace.NORTH;
                 break;
+            case WEST:
+                face = BlockFace.SOUTH;
+                break;
             case NORTH:
-                face = BlockFace.EAST;
+                face = BlockFace.WEST;
                 break;
             case SOUTH:
-                face = BlockFace.WEST;
+                face = BlockFace.EAST;
                 break;
             default:
                 face = BlockFace.SELF;
                 break;
         }
-        if (furnace.getBlock().getRelative(face).getTypeId() == Material.CHEST.getId()) {
-            return (Chest) furnace.getBlock().getRelative(face).getState();
-        } else {
-            return null;
-        }
+        return furnace.getBlock().getRelative(face);
     }
 }
