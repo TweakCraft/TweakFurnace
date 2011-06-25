@@ -20,7 +20,7 @@ public class TFurnace {
     private Furnace furnace;
 
     private Integer getMaxstack(Material mat) {
-        if(mat!=null)
+        if (mat != null)
             return mat.getMaxStackSize();
         return null;
     }
@@ -30,7 +30,9 @@ public class TFurnace {
         FUEL,
         RESULT;
 
-        public int getSpot() { return this.ordinal(); }
+        public int getSpot() {
+            return this.ordinal();
+        }
     }
 
     public TFurnace(Furnace furnace) {
@@ -61,30 +63,23 @@ public class TFurnace {
             return result;
     }
 
-    public ItemStack getItem(int id) {
-
-        if(id>=0 && id<3) {
-            ItemStack result = this.furnace.getInventory().getItem(id);
-            if(result != null && result.getType() != Material.AIR) {
-                return result;
-            }
+    public ItemStack getItem(invSpot spot) {
+        ItemStack result = this.furnace.getInventory().getItem(spot.getSpot());
+        if (result != null && result.getType() != Material.AIR) {
+            return result;
         }
         return null;
     }
 
-    public void updateCount(int pos, int amount) {
-        if(pos>=0 && pos<3) {
-            if(this.furnace.getInventory().getItem(pos)!=null&&
-                    this.furnace.getInventory().getItem(pos).getType()!=Material.AIR) {
-                this.getFurnace().getInventory().getItem(pos).setAmount(amount);
-            }
+    public void updateCount(invSpot spot, int amount) {
+        if (this.furnace.getInventory().getItem(spot.getSpot()) != null &&
+                this.furnace.getInventory().getItem(spot.getSpot()).getType() != Material.AIR) {
+            this.getFurnace().getInventory().getItem(spot.getSpot()).setAmount(amount);
         }
     }
 
-    public void setItem(int id, ItemStack stack) {
-        if(id>=0 && id<3) {
-            this.furnace.getInventory().setItem(id, stack);
-        }
+    public void setItem(invSpot spot, ItemStack stack) {
+        this.furnace.getInventory().setItem(spot.getSpot(), stack);
     }
 
     public void setFuel(ItemStack stack) {
@@ -114,7 +109,7 @@ public class TFurnace {
      * @return The amount of fuel that didn't fit in the furnace
      */
     public ItemStack putInFurnace(invSpot spot, ItemStack stack) {
-        ItemStack oldstack = this.getItem(spot.getSpot());
+        ItemStack oldstack = this.getItem(spot);
         if ((oldstack != null && stack.getTypeId() != oldstack.getTypeId())
                 && oldstack.getDurability() != stack.getDurability())
             return stack;
@@ -142,10 +137,10 @@ public class TFurnace {
         }
 
         if (updateCount)
-            this.updateCount(spot.getSpot(), amountinfurnace);
+            this.updateCount(spot, amountinfurnace);
         else {
             newStack.setAmount(amountinfurnace);
-            this.setItem(spot.getSpot(), newStack);
+            this.setItem(spot, newStack);
         }
 
         if (amount == 0)
