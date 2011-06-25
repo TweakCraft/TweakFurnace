@@ -25,7 +25,7 @@ public class TFurnace {
         return null;
     }
 
-    private enum invSpot {
+    public enum invSpot {
         SMELT,
         FUEL,
         RESULT;
@@ -100,11 +100,11 @@ public class TFurnace {
     }
 
     public ItemStack putFuel(ItemStack stack) {
-        return this.putInFurnace(invSpot.FUEL.getSpot(), stack);
+        return this.putInFurnace(invSpot.FUEL, stack);
     }
 
     public ItemStack putSmelt(ItemStack stack) {
-        return this.putInFurnace(invSpot.SMELT.getSpot(), stack);
+        return this.putInFurnace(invSpot.SMELT, stack);
     }
 
     /**
@@ -113,8 +113,8 @@ public class TFurnace {
      * @param stack
      * @return The amount of fuel that didn't fit in the furnace
      */
-    public ItemStack putInFurnace(int invId, ItemStack stack) {
-        ItemStack oldstack = this.getItem(invId);
+    public ItemStack putInFurnace(invSpot spot, ItemStack stack) {
+        ItemStack oldstack = this.getItem(spot.getSpot());
         if ((oldstack != null && stack.getTypeId() != oldstack.getTypeId())
                 && oldstack.getDurability() != stack.getDurability())
             return stack;
@@ -142,10 +142,10 @@ public class TFurnace {
         }
 
         if (updateCount)
-            this.updateCount(invId, amountinfurnace);
+            this.updateCount(spot.getSpot(), amountinfurnace);
         else {
             newStack.setAmount(amountinfurnace);
-            this.setItem(invId, newStack);
+            this.setItem(spot.getSpot(), newStack);
         }
 
         if (amount == 0)
