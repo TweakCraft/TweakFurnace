@@ -1,6 +1,7 @@
 package net.tweakcraft.TweakFurnace;
 
 import com.nijiko.permissions.PermissionHandler;
+import com.nijikokun.bukkit.Permissions.Permissions;
 import com.zones.Zones;
 import com.zones.model.ZoneBase;
 import net.tweakcraft.TweakFurnace.Listeners.*;
@@ -60,7 +61,7 @@ public class TweakFurnace extends JavaPlugin {
         }
         plugin = getServer().getPluginManager().getPlugin("Permissions");
         if (plugin != null) {
-            permissionsPlugin = (PermissionHandler) plugin;
+            permissionsPlugin = ((Permissions) plugin).getHandler();
         } else {
             log.info("[TweakFurnace] No permissions plugin found, defaulting to OP.");
         }
