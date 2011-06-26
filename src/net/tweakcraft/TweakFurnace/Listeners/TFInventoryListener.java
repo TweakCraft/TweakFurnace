@@ -59,17 +59,61 @@ public class TFInventoryListener extends InventoryListener {
                     continue;
                 if (fuelStack.getAmount() + i.getAmount() > maxStackSize) {
                     fuelStack.setAmount(maxStackSize);
-                    inv[index].setAmount(i.getAmount() + fuelStack.getAmount() - maxStackSize);
+                    if ((i.getAmount() + fuelStack.getAmount() - maxStackSize) == 0) {
+                        inv[index] = null;
+                    } else {
+                        inv[index].setAmount(i.getAmount() + fuelStack.getAmount() - maxStackSize);
+                    }
                 } else {
                     fuelStack.setAmount(fuelStack.getAmount() + i.getAmount());
                     inv[index] = null;
                 }
             }
-            if (fuelStack.getAmount() == maxStackSize)
+            if (fuelStack.getAmount() == maxStackSize) {
+                fuelStack.setAmount(maxStackSize);
                 break;
+            }
         }
-        fuelStack.setAmount(fuelStack.getAmount());
+        log.info("Removing: " + fuelStack.toString());
         fuel.getInventory().setContents(inv);
-        furnace.setFuel(fuelStack);
+        if (fuelStack.getAmount() != maxStackSize) {
+            furnace.setFuel(fuelStack);
+        } else {
+            furnace.setFuel(fuelStack);
+            new FurnaceFillThread(furnace, TFurnace.invSpot.FUEL, fuelStack);
+        }
+    }
+}
+
+class FurnaceFillThread implements Runnable {
+    Thread thread;
+    TFurnace furnace;
+    TFurnace.invSpot spot;
+    ItemStack item;
+
+    public FurnaceFillThread(TFurnace f, TFurnace.invSpot s, ItemStack i) {
+        furnace = f;
+        spot = s;
+        item = i;
+        thread = new Thread(this, "FurnaceFillThread");
+        thread.start();
+    }
+
+    public void run() {
+        try {
+            System.out.println("Starting thread");
+            Thread.sleep(2);
+            ItemStack fuel = furnace.getFuel();
+            if (fuel == null) {
+                System.out.println("Setting fuel to 1");
+                item.setAmount(1);
+            } else {
+                item.setAmount(fuel.getAmount() + 1);
+                System.out.println("Setting fuel to " + (fuel.getAmount() + 1));
+            }
+            furnace.setItem(spot, item);
+        } catch (InterruptedException e) {
+            System.out.println("Exception in FurnaceFillThread: " + e.getMessage());
+        }
     }
 }
