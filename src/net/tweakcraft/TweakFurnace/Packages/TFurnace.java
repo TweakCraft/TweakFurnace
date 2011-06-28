@@ -261,4 +261,34 @@ public class TFurnace {
         }
         return furnace.getBlock().getRelative(face);
     }
+
+    public static int getBurnTime(ItemStack item) {
+        return getBurnTime(item.getType());
+    }
+
+    public static int getBurnTime(Material m) {
+        switch (m) {
+            case LAVA_BUCKET:
+                return 20000;
+            case STICK:
+            case SAPLING:
+                return 100;
+            case WOOD:
+            case LOG:
+            case BOOKSHELF:
+            case CHEST:
+            case WORKBENCH:
+            case FENCE:
+            case WOOD_STAIRS:
+            case NOTE_BLOCK:
+            case JUKEBOX:
+            case LOCKED_CHEST:
+            case TRAP_DOOR:
+                return 300;
+            case COAL:
+                return 1600;
+            default:
+                return 0;
+        }
+    }
 }
