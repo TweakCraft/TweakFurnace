@@ -1,6 +1,7 @@
 package net.tweakcraft.TweakFurnace.Listeners;
 
 import net.tweakcraft.TweakFurnace.Packages.Items;
+import net.tweakcraft.TweakFurnace.Packages.TFChestUtils;
 import net.tweakcraft.TweakFurnace.Packages.TFurnace;
 import net.tweakcraft.TweakFurnace.TweakFurnace;
 import org.bukkit.Material;
@@ -31,24 +32,44 @@ public class TFInventoryListener extends InventoryListener {
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
         if (event.isCancelled())
             return;
+
         TFurnace furnace = new TFurnace((Furnace) event.getFurnace().getState());
+
         if (event.isCancelled()
-                || furnace.getSmelt().getTypeId() != Material.AIR.getId()
+                || furnace.getSmelt().getAmount() > 1
                 || furnace.getLeftBlock().getTypeId() != Material.CHEST.getId()
+                || (furnace.getResult() == null || furnace.getResult().getAmount() == 63)
                 || furnace.getRightBlock().getTypeId() != Material.CHEST.getId()
                 || furnace.getBackBlock().getTypeId() != Material.CHEST.getId())
             return;
+
+        ItemStack smeltStack = furnace.getResult();
+        if (smeltStack != null) {
+            smeltStack.setAmount(smeltStack.getAmount() + 1);
+            if (smeltStack.getAmount() == 64) {
+                Chest result = (Chest) furnace.getRightBlock().getState();
+                smeltStack = TFChestUtils.safeAddItems(result, smeltStack);
+                if (smeltStack != null && smeltStack.getAmount() > 0)
+                    furnace.setResult(smeltStack);
+                else
+                    furnace.setResult(null);
+            }
+        } else {
+            furnace.setResult(event.getResult());
+        }
+
+        smeltStack = null;
+
         Chest smelt = (Chest) furnace.getLeftBlock().getState();
         ItemStack[] inv = smelt.getInventory().getContents();
-        ItemStack smeltStack = null;
-        int maxStackSize = 0;
+
+        int maxStackSize = 64;
         for (int index = 0; index < inv.length; index++) {
             ItemStack i = inv[index];
             if (i == null || !Items.isSmeltable(i.getTypeId()))
                 continue;
             if (smeltStack == null) {
                 smeltStack = i;
-                maxStackSize = 64;
                 inv[index] = null;
             } else {
                 if (smeltStack.getTypeId() != i.getTypeId() || smeltStack.getDurability() != i.getDurability())
@@ -72,6 +93,7 @@ public class TFInventoryListener extends InventoryListener {
         }
         smelt.getInventory().setContents(inv);
         furnace.setSmelt(smeltStack);
+        event.setCancelled(true);
     }
 
     /**
@@ -83,6 +105,8 @@ public class TFInventoryListener extends InventoryListener {
         if (event.isCancelled())
             return;
 
+        TFurnace furnace = new TFurnace((Furnace) event.getFurnace().getState());
+
         switch (event.getFuel().getType()) {
             case REDSTONE:
                 event.setBurnTime(3200);
@@ -92,9 +116,9 @@ public class TFInventoryListener extends InventoryListener {
                 return;
         }
 
-        TFurnace furnace = new TFurnace((Furnace) event.getFurnace().getState());
         if (event.isCancelled()
                 || furnace.getFuel().getTypeId() != Material.AIR.getId()
+                || furnace.getResult().getAmount() == 64
                 || furnace.getLeftBlock().getTypeId() != Material.CHEST.getId()
                 || furnace.getRightBlock().getTypeId() != Material.CHEST.getId()
                 || furnace.getBackBlock().getTypeId() != Material.CHEST.getId())

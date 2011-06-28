@@ -289,6 +289,10 @@ public class TFurnace {
                 return 1600;
             default:
                 return 0;
+            case REDSTONE:
+                return 3200;
+            case DIAMOND:
+                return 12800;
         }
     }
 }

@@ -10,7 +10,7 @@ import org.bukkit.inventory.ItemStack;
  */
 public class TFChestUtils {
 
-    public static boolean safeAddItems(Chest chest, ItemStack itemStack) throws OutOfSpaceException {
+    public static ItemStack safeAddItems(Chest chest, ItemStack itemStack) {
         int amount = itemStack.getAmount();
         ItemStack[] stacks = chest.getInventory().getContents();
         for (int i = 0; i < stacks.length; i++) {
@@ -64,10 +64,10 @@ public class TFChestUtils {
             }
         }
         if (amount > 0) {
-            throw new OutOfSpaceException();
+            itemStack.setAmount(amount);
+            return itemStack;
         } else {
-            chest.getInventory().setContents(stacks);
-            return true;
+            return null;
         }
     }
 }
