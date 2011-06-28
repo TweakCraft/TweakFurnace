@@ -263,7 +263,10 @@ public class TFurnace {
     }
 
     public static int getBurnTime(ItemStack item) {
-        return getBurnTime(item.getType());
+        if (item == null)
+            return 0;
+        else
+            return getBurnTime(item.getType());
     }
 
     public static int getBurnTime(Material m) {
@@ -287,12 +290,12 @@ public class TFurnace {
                 return 300;
             case COAL:
                 return 1600;
-            default:
-                return 0;
             case REDSTONE:
                 return 3200;
             case DIAMOND:
                 return 12800;
+            default:
+                return 0;
         }
     }
 }
