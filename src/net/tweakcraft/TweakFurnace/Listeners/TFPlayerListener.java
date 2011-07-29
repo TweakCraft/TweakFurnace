@@ -39,18 +39,26 @@ public class TFPlayerListener extends PlayerListener {
             if (hand != null && hand.getAmount() > 0 && hand.getTypeId() != Material.AIR.getId()) {
                 ItemStack leftover;
                 int total, diff;
-                ItemStack fuel = furnace.getFuel();
-                if (fuel != null && fuel.getAmount() > 0 && (fuel.getTypeId() != hand.getTypeId()
-                        || fuel.getDurability() != hand.getDurability())) {
-                    //Eerst maar eens kijken wie dit allemaal "gebruikt"
-                    //event.getPlayer().sendMessage(ChatColor.DARK_RED + "This furnace already contains something else!");
-                    log.info("[TweakFurnace] " + event.getPlayer().getName() + " tried to put " + hand.getType().name() + " in a furnace with " + fuel.getType().name());
-                    return;
-                }
                 if (Items.isFuel(hand.getTypeId())) {
+                    ItemStack fuel = furnace.getFuel();
+                    if (fuel != null && fuel.getTypeId() != Material.AIR.getId() && fuel.getAmount() > 0 && (fuel.getTypeId() != hand.getTypeId()
+                            || fuel.getDurability() != hand.getDurability())) {
+                        //Eerst maar eens kijken wie dit allemaal "gebruikt"
+                        //event.getPlayer().sendMessage(ChatColor.DARK_RED + "This furnace already contains something else!");
+                        log.info("[TweakFurnace] " + event.getPlayer().getName() + " tried to put " + hand.getType().name() + " in a furnace with " + fuel.getType().name());
+                        return;
+                    }
                     leftover = furnace.putFuel(hand.clone());
                     total = furnace.getFuel().getAmount();
                 } else if (Items.isSmeltable(hand.getTypeId())) {
+                    ItemStack smelt = furnace.getSmelt();
+                    if (smelt != null && smelt.getTypeId() != Material.AIR.getId() && smelt.getAmount() > 0 && (smelt.getTypeId() != hand.getTypeId()
+                            || smelt.getDurability() != hand.getDurability())) {
+                        //Eerst maar eens kijken wie dit allemaal "gebruikt"
+                        //event.getPlayer().sendMessage(ChatColor.DARK_RED + "This furnace already contains something else!");
+                        log.info("[TweakFurnace] " + event.getPlayer().getName() + " tried to put " + hand.getType().name() + " in a furnace with " + smelt.getType().name());
+                        return;
+                    }
                     leftover = furnace.putSmelt(hand.clone());
                     total = furnace.getSmelt().getAmount();
                 } else {
