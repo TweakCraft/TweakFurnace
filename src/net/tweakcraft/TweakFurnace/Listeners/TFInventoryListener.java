@@ -1,7 +1,6 @@
 package net.tweakcraft.TweakFurnace.Listeners;
 
 import net.tweakcraft.TweakFurnace.Packages.Items;
-import net.tweakcraft.TweakFurnace.Packages.TFChestUtils;
 import net.tweakcraft.TweakFurnace.Packages.TFurnace;
 import net.tweakcraft.TweakFurnace.TweakFurnace;
 import org.bukkit.Material;
@@ -12,6 +11,7 @@ import org.bukkit.event.inventory.FurnaceSmeltEvent;
 import org.bukkit.event.inventory.InventoryListener;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.HashMap;
 import java.util.logging.Logger;
 
 /**
@@ -38,21 +38,20 @@ public class TFInventoryListener extends InventoryListener {
         if (event.isCancelled()
                 || furnace.getSmelt().getAmount() > 1
                 || furnace.getLeftBlock().getTypeId() != Material.CHEST.getId()
-                || (furnace.getResult() == null || furnace.getResult().getAmount() == 63)
                 || furnace.getRightBlock().getTypeId() != Material.CHEST.getId()
                 || furnace.getBackBlock().getTypeId() != Material.CHEST.getId())
             return;
 
-        ItemStack smeltStack = furnace.getResult();
+        ItemStack smeltStack = event.getResult();
         if (smeltStack != null) {
             smeltStack.setAmount(smeltStack.getAmount() + 1);
             if (smeltStack.getAmount() == 64) {
                 Chest result = (Chest) furnace.getRightBlock().getState();
-                smeltStack = TFChestUtils.safeAddItems(result, smeltStack);
-                if (smeltStack != null && smeltStack.getAmount() > 0)
-                    furnace.setResult(smeltStack);
+                HashMap<Integer, ItemStack> stackHashMap = result.getInventory().addItem(smeltStack);
+                if (stackHashMap.isEmpty())
+                    event.setResult(null);
                 else
-                    furnace.setResult(null);
+                    event.setResult(stackHashMap.get(0));
             }
         } else {
             furnace.setResult(event.getResult());
@@ -123,6 +122,7 @@ public class TFInventoryListener extends InventoryListener {
                 || furnace.getRightBlock().getTypeId() != Material.CHEST.getId()
                 || furnace.getBackBlock().getTypeId() != Material.CHEST.getId())
             return;
+
         Chest fuel = (Chest) furnace.getBackBlock().getState();
         ItemStack[] inv = fuel.getInventory().getContents();
         ItemStack fuelStack = null;

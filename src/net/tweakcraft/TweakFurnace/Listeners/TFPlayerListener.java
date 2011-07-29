@@ -39,6 +39,11 @@ public class TFPlayerListener extends PlayerListener {
             if (hand != null && hand.getAmount() > 0 && hand.getTypeId() != Material.AIR.getId()) {
                 ItemStack leftover;
                 int total, diff;
+                ItemStack fuel = furnace.getFuel();
+                if (fuel != null && fuel.getAmount() > 0 && (fuel.getTypeId() != hand.getTypeId()
+                        || fuel.getDurability() != hand.getDurability())) {
+                    return;
+                }
                 if (Items.isFuel(hand.getTypeId())) {
                     leftover = furnace.putFuel(hand.clone());
                     total = furnace.getFuel().getAmount();
