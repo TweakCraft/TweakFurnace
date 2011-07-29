@@ -42,6 +42,8 @@ public class TFPlayerListener extends PlayerListener {
                 ItemStack fuel = furnace.getFuel();
                 if (fuel != null && fuel.getAmount() > 0 && (fuel.getTypeId() != hand.getTypeId()
                         || fuel.getDurability() != hand.getDurability())) {
+                    event.getPlayer().sendMessage(ChatColor.DARK_RED + "This furnace already contains something else!");
+                    log.info("[TweakFurnace] " + event.getPlayer().getName() + " tried to put " + hand.getType().name() + " in a furnace with " + fuel.getType().name());
                     return;
                 }
                 if (Items.isFuel(hand.getTypeId())) {
