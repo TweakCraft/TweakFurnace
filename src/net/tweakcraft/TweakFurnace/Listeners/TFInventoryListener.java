@@ -46,14 +46,14 @@ public class TFInventoryListener extends InventoryListener {
             log.info("[TweakFurnace] Wait whut?");
             ItemStack stack = furnace.getResult().clone();
             stack.setAmount(32);
-            stack.setAmount(TFInventoryUtils.addMaterials((Chest) furnace.getRightBlock().getState(), stack));
+            stack.setAmount(TFInventoryUtils.addMaterials(null, (Chest) furnace.getRightBlock().getState(), stack));
             furnace.setResult(stack);
         }
 
         if (furnace.getSmelt().getAmount() == 1 && furnace.getSmelt().getTypeId() != Material.AIR.getId()) {
             ItemStack stack = furnace.getSmelt().clone();
             stack.setAmount(32);
-            stack.setAmount(32 - TFInventoryUtils.removeMaterials((Chest) furnace.getLeftBlock().getState(), stack) + 1);
+            stack.setAmount(32 - TFInventoryUtils.removeMaterials(null, (Chest) furnace.getLeftBlock().getState(), stack) + 1);
             furnace.setSmelt(stack);
         }
 
@@ -75,7 +75,7 @@ public class TFInventoryListener extends InventoryListener {
         if (furnace.getFuel().getAmount() == 1 && furnace.getFuel().getTypeId() != Material.AIR.getId()) {
             ItemStack stack = furnace.getFuel().clone();
             stack.setAmount(32);
-            stack.setAmount(32 - TFInventoryUtils.removeMaterials((Chest) furnace.getBackBlock().getState(), stack) + 1);
+            stack.setAmount(32 - TFInventoryUtils.removeMaterials(null, (Chest) furnace.getBackBlock().getState(), stack) + 1);
             furnace.setFuel(stack);
         }
     }

@@ -11,3 +11,8 @@ commands:
     tfmute:
         description: Toggle mute for this plugin
         usage: /<command>
+        aliases: [tfm]
+    tfamount:
+        description: Toggle amount for furnace input
+        usage: /<command>
+        aliases: [tfa]

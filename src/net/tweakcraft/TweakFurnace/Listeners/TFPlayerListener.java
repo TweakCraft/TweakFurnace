@@ -1,6 +1,7 @@
 package net.tweakcraft.TweakFurnace.Listeners;
 
 import net.tweakcraft.TweakFurnace.Packages.Items;
+import net.tweakcraft.TweakFurnace.Packages.TFInventoryUtils;
 import net.tweakcraft.TweakFurnace.Packages.TFurnace;
 import net.tweakcraft.TweakFurnace.TweakFurnace;
 import org.bukkit.ChatColor;
@@ -10,6 +11,7 @@ import org.bukkit.block.Furnace;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerListener;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.logging.Logger;
@@ -83,5 +85,9 @@ public class TFPlayerListener extends PlayerListener {
                 }
             }
         }
+    }
+
+    public void onPlayerQuit(PlayerQuitEvent event){
+        TFInventoryUtils.removeCustomPlayerAmount(event.getPlayer());
     }
 }
