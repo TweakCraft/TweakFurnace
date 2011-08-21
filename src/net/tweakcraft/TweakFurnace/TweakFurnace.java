@@ -31,7 +31,7 @@ public class TweakFurnace extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     private TFPlayerListener playerListener = new TFPlayerListener(this);
     private TFBlockListener blockListener = new TFBlockListener(this);
-    private TFInventoryListener inventoryListener = new TFInventoryListener(this);
+    // private TFInventoryListener inventoryListener = new TFInventoryListener(this);
     private HashSet<Player> muteList = new HashSet<Player>();
     private Zones zonesPlugin;
     private PermissionHandler permissionsPlugin;
@@ -91,7 +91,7 @@ public class TweakFurnace extends JavaPlugin {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (label.equalsIgnoreCase("tfmute")) {
+        if (command.getName().equals("tfmute")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
                 if (muteList.contains(p)) {
@@ -105,12 +105,13 @@ public class TweakFurnace extends JavaPlugin {
                 sender.sendMessage("You have to be a player to use this command!");
             }
             return true;
-        } else if (label.equalsIgnoreCase("tfamount")) {
+        } else if (command.getName().equals("tfamount")) {
             if (sender instanceof Player) {
                 Player p = (Player) sender;
-                if (args.length > 1) {
+                if (args.length > 0) {
                     try {
-                        int amount = Integer.parseInt(args[0]);
+                        int amount = 0;
+                        try{amount=Integer.parseInt(args[0]);} catch(NumberFormatException ex) { amount=0; }
                         if (amount < 1)
                             amount = 64;
                         TFInventoryUtils.setCustomPlayerAmount(p, amount);
@@ -120,6 +121,7 @@ public class TweakFurnace extends JavaPlugin {
                     }
                 } else {
                     TFInventoryUtils.removeCustomPlayerAmount(p);
+                    sender.sendMessage(ChatColor.GOLD + "Removed custom amount.");
                 }
             } else {
                 sender.sendMessage("You have to be a player to use this feature.");

@@ -41,6 +41,15 @@ public class TFPlayerListener extends PlayerListener {
             if (hand != null && hand.getAmount() > 0 && hand.getTypeId() != Material.AIR.getId()) {
                 ItemStack leftover;
                 int total, diff;
+                int holdback = TFInventoryUtils.getCustomPlayerAmount(event.getPlayer());
+                int heldback = 0;
+                if(holdback!=64) {
+                    if(hand.getAmount()>holdback && hand.getAmount() - holdback>0) {
+                        heldback = hand.getAmount()-holdback;
+                        hand.setAmount(holdback);
+                    }
+
+                }
                 if (Items.isFuel(hand.getTypeId())) {
                     ItemStack fuel = furnace.getFuel();
                     if (fuel != null && fuel.getTypeId() != Material.AIR.getId() && fuel.getAmount() > 0 && (fuel.getTypeId() != hand.getTypeId()
@@ -61,6 +70,19 @@ public class TFPlayerListener extends PlayerListener {
                         log.info("[TweakFurnace] " + event.getPlayer().getName() + " tried to put " + hand.getType().name() + " in a furnace with " + smelt.getType().name());
                         return;
                     }
+                    if(smelt!=null&&smelt.getTypeId()!=Material.AIR.getId()) {
+                        int infurnace = smelt.getAmount();
+                        if(infurnace+hand.getAmount()>holdback) {
+                            
+                            // hand.setAmount(); /* Checks op hoeveel er al in de furnace zit */
+
+                            /* Iets als int insteken = infurnace-holdback; if(insteken < 0) insteken = ~insteken+1;
+                                en daarmee/of met iets dergerlijks werken ipv een while ofzo? Just rambling out loud here.
+                             */
+                        }
+
+                        
+                    }
                     leftover = furnace.putSmelt(hand.clone());
                     total = furnace.getSmelt().getAmount();
                 } else {
@@ -71,6 +93,11 @@ public class TFPlayerListener extends PlayerListener {
                     diff = hand.getAmount();
                 } else {
                     diff = hand.getAmount() - leftover.getAmount();
+                }
+
+                if(heldback>0) {
+                    if(leftover == null) leftover = new ItemStack(hand.getTypeId(), heldback, hand.getData().getData());
+                    else leftover.setAmount(leftover.getAmount()+heldback);
                 }
 
                 event.getPlayer().setItemInHand(leftover);

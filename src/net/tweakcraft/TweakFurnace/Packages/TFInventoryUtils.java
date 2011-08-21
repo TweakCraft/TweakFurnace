@@ -18,7 +18,15 @@ public class TFInventoryUtils {
     }
 
     public static void removeCustomPlayerAmount(Player player){
-        playerAmountMap.remove(player);
+        if(playerAmountMap.containsKey(player))
+            playerAmountMap.remove(player);
+    }
+    
+    public static int getCustomPlayerAmount(Player player) {
+        if(playerAmountMap.containsKey(player))
+            return playerAmountMap.get(player);
+        else
+            return 64;
     }
 
     public static int removeMaterials(Player player, Chest chest, ItemStack toRemove) {

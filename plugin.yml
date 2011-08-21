@@ -3,10 +3,8 @@ main: net.tweakcraft.TweakFurnace.TweakFurnace
 authors:
     - GuntherDW
     - Edoxile
-    - GuntherDW
-    - GuntherDW
 website: https://github.com/Edoxile/TweakFurnace
-version: 0.2
+version: 0.2a
 commands:
     tfmute:
         description: Toggle mute for this plugin
