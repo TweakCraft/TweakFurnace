@@ -271,6 +271,8 @@ public class TFurnace {
 
     public static int getBurnTime(Material m) {
         switch (m) {
+            case BLAZE_ROD:
+                return 2400;
             case LAVA_BUCKET:
                 return 20000;
             case STICK:
