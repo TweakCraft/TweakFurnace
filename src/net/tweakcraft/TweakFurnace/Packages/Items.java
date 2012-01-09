@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class Items {
 
-    private final static List<Integer> fuels = Arrays.asList(new Integer[]{ Material.STICK.getId(), Material.SAPLING.getId(), Material.WORKBENCH.getId(), Material.CHEST.getId(), Material.COAL.getId(), Material.BOOKSHELF.getId(), Material.WOOD.getId(), Material.LAVA_BUCKET.getId()});
+    private final static List<Integer> fuels = Arrays.asList(new Integer[]{ Material.STICK.getId(), Material.SAPLING.getId(), Material.WORKBENCH.getId(), Material.CHEST.getId(), Material.COAL.getId(), Material.BOOKSHELF.getId(), Material.WOOD.getId(), Material.LAVA_BUCKET.getId(), Material.BLAZE_ROD.getId()});
     private final static List<Integer> smeltables = Arrays.asList(new Integer[]{Material.LOG.getId(),Material.IRON_ORE.getId(), Material.GOLD_ORE.getId(), Material.CACTUS.getId(), Material.COBBLESTONE.getId(), Material.SAND.getId(), Material.CLAY_BALL.getId(), Material.RAW_FISH.getId(), Material.PORK.getId()});
 
     public static List<Integer> getSmeltables() {
