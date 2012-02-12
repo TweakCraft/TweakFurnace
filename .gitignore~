@@ -1,6 +1,5 @@
 #ignore my eclipse files
 /bin
-/lib
 /.project
 /.settings
 /.classpath
