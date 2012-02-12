@@ -8,9 +8,10 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerListener;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
@@ -19,8 +20,8 @@ import java.util.logging.Logger;
 /**
  * @author GuntherDW, Edoxile
  */
-public class TFPlayerListener extends PlayerListener {
-
+public class TFPlayerListener implements Listener {
+    
     private static final Logger log = Logger.getLogger("Minecraft");
 
     private TweakFurnace plugin;
@@ -28,7 +29,8 @@ public class TFPlayerListener extends PlayerListener {
     public TFPlayerListener(TweakFurnace instance) {
         this.plugin = instance;
     }
-
+    
+    @EventHandler
     public void onPlayerInteract(PlayerInteractEvent event) {
         if (event.isCancelled() || event.getAction() != Action.LEFT_CLICK_BLOCK)
             return;
@@ -113,7 +115,8 @@ public class TFPlayerListener extends PlayerListener {
             }
         }
     }
-
+    
+    @EventHandler
     public void onPlayerQuit(PlayerQuitEvent event){
         TFInventoryUtils.removeCustomPlayerAmount(event.getPlayer());
     }

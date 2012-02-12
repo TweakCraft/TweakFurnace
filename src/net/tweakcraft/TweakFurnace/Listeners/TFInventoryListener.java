@@ -2,13 +2,13 @@ package net.tweakcraft.TweakFurnace.Listeners;
 
 import net.tweakcraft.TweakFurnace.Packages.TFInventoryUtils;
 import net.tweakcraft.TweakFurnace.Packages.TFurnace;
-import net.tweakcraft.TweakFurnace.TweakFurnace;
 import org.bukkit.Material;
 import org.bukkit.block.Chest;
 import org.bukkit.block.Furnace;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.inventory.FurnaceSmeltEvent;
-import org.bukkit.event.inventory.InventoryListener;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.logging.Logger;
@@ -18,16 +18,14 @@ import java.util.logging.Logger;
  *
  * @author Edoxile, GuntherDW
  */
-public class TFInventoryListener extends InventoryListener {
+public class TFInventoryListener implements Listener {
 
     private static final Logger log = Logger.getLogger("Minecraft");
 
-    private TweakFurnace plugin;
-
-    public TFInventoryListener(TweakFurnace instance) {
-        this.plugin = instance;
+    public TFInventoryListener() {
     }
-
+    
+    @EventHandler
     public void onFurnaceSmelt(FurnaceSmeltEvent event) {
         if (event.isCancelled())
             return;
@@ -58,11 +56,12 @@ public class TFInventoryListener extends InventoryListener {
         }
 
     }
-
+    
+    @EventHandler
     public void onFurnaceBurn(FurnaceBurnEvent event) {
         if (event.isCancelled())
             return;
-
+        
         TFurnace furnace = new TFurnace((Furnace) event.getFurnace().getState());
 
         if (event.isCancelled()

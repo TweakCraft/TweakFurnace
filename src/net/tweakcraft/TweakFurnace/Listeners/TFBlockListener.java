@@ -1,32 +1,28 @@
 package net.tweakcraft.TweakFurnace.Listeners;
 
 import net.tweakcraft.TweakFurnace.Packages.TFurnace;
-import net.tweakcraft.TweakFurnace.TweakFurnace;
 import org.bukkit.block.Block;
 import org.bukkit.block.Furnace;
-import org.bukkit.event.block.BlockListener;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockRedstoneEvent;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
-import java.util.logging.Logger;
-
 /**
  * Created by IntelliJ IDEA.
  *
  * @author GuntherDW, Edoxile
  */
-public class TFBlockListener extends BlockListener {
+public class TFBlockListener implements Listener {
 
-    private static final Logger log = Logger.getLogger("Minecraft");
-    private TweakFurnace plugin;
-
-    public TFBlockListener(TweakFurnace instance) {
-        this.plugin = instance;
+    public TFBlockListener() {
+        //No need to do anything
+        //if you really need that TweakFurnace instance again
+        //include it again
     }
-
+    
+    @EventHandler
     public void onBlockRedstoneChange(BlockRedstoneEvent event) {
         if (event.getNewCurrent() == event.getOldCurrent() || (event.getNewCurrent() > 0 && event.getOldCurrent() > 0) || event.getNewCurrent() == 0) {
             return;

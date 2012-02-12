@@ -7,14 +7,10 @@ import org.bukkit.block.BlockFace;
 import org.bukkit.block.Furnace;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.logging.Logger;
-
 /**
  * @author GuntherDW, Edoxile
  */
 public class TFurnace {
-
-    private static final Logger log = Logger.getLogger("Minecraft");
 
     private Furnace furnace;
 
@@ -261,7 +257,7 @@ public class TFurnace {
         }
         return furnace.getBlock().getRelative(face);
     }
-
+    @Deprecated
     public static int getBurnTime(ItemStack item) {
         if (item == null)
             return 0;
@@ -269,6 +265,7 @@ public class TFurnace {
             return getBurnTime(item.getType());
     }
 
+    @Deprecated
     public static int getBurnTime(Material m) {
         switch (m) {
             case BLAZE_ROD:

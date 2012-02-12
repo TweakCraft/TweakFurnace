@@ -5,7 +5,6 @@ import com.nijikokun.bukkit.Permissions.Permissions;
 import com.zones.Zones;
 import com.zones.model.ZoneBase;
 import net.tweakcraft.TweakFurnace.Listeners.TFBlockListener;
-import net.tweakcraft.TweakFurnace.Listeners.TFInventoryListener;
 import net.tweakcraft.TweakFurnace.Listeners.TFPlayerListener;
 import net.tweakcraft.TweakFurnace.Packages.Items;
 import net.tweakcraft.TweakFurnace.Packages.TFInventoryUtils;
@@ -14,7 +13,6 @@ import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,7 +28,7 @@ import java.util.logging.Logger;
 public class TweakFurnace extends JavaPlugin {
     private static final Logger log = Logger.getLogger("Minecraft");
     private TFPlayerListener playerListener = new TFPlayerListener(this);
-    private TFBlockListener blockListener = new TFBlockListener(this);
+    private TFBlockListener blockListener = new TFBlockListener();
     // private TFInventoryListener inventoryListener = new TFInventoryListener(this);
     private HashSet<Player> muteList = new HashSet<Player>();
     private Zones zonesPlugin;
@@ -50,11 +48,14 @@ public class TweakFurnace extends JavaPlugin {
     }
 
     public void registerEvents() {
-        this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
-        this.getServer().getPluginManager().registerEvent(Event.Type.REDSTONE_CHANGE, blockListener, Event.Priority.Normal, this);
-        this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
+        // OlD EVENT SYSTEM: this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_INTERACT, playerListener, Event.Priority.Normal, this);
+        // OlD EVENT SYSTEM: this.getServer().getPluginManager().registerEvent(Event.Type.REDSTONE_CHANGE, blockListener, Event.Priority.Normal, this);
+        // OlD EVENT SYSTEM: this.getServer().getPluginManager().registerEvent(Event.Type.PLAYER_QUIT, playerListener, Event.Priority.Normal, this);
         //this.getServer().getPluginManager().registerEvent(Event.Type.FURNACE_BURN, inventoryListener, Event.Priority.Lowest, this);
         //this.getServer().getPluginManager().registerEvent(Event.Type.FURNACE_SMELT, inventoryListener, Event.Priority.Lowest, this);
+        this.getServer().getPluginManager().registerEvents(playerListener, this);
+        this.getServer().getPluginManager().registerEvents(blockListener, this);
+        
     }
 
     public void loadPlugins() {
